@@ -33,6 +33,7 @@
             max-width: 500px;
             width: 90%;
             position: relative;
+            overflow: hidden;
         }
 
         .icon {
@@ -57,7 +58,6 @@
             display: flex;
             gap: 20px;
             margin-top: 10px;
-            position: relative;
             width: 100%;
             justify-content: center;
             min-height: 60px;
@@ -228,37 +228,45 @@
         const celebration = document.getElementById('celebration');
         const container = document.querySelector('.container');
 
-        // NO 버튼 도망가기
+        // NO 버튼 도망가기 - container 안에서만
         noBtn.addEventListener('mouseenter', () => {
-            const containerRect = buttonContainer.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
             const btnRect = noBtn.getBoundingClientRect();
 
-            const maxX = containerRect.width - btnRect.width;
-            const maxY = containerRect.height - btnRect.height;
+            // container 내에서 버튼이 이동할 수 있는 최대 범위 (안전 여백 포함)
+            const safeMargin = 30; // 안전 여백
+            const maxX = containerRect.width - btnRect.width - safeMargin;
+            const maxY = containerRect.height - btnRect.height - safeMargin;
 
-            const randomX = Math.random() * maxX - (btnRect.left - containerRect.left);
-            const randomY = Math.random() * maxY - (btnRect.top - containerRect.top);
+            // 랜덤한 새 위치
+            const randomX = Math.max(safeMargin / 2, Math.random() * maxX);
+            const randomY = Math.max(safeMargin / 2, Math.random() * maxY);
 
-            // 기존 translateX(50%)를 유지하면서 도망가기
-            noBtn.style.left = '50%';
-            noBtn.style.transform = `translateX(50%) translate(${randomX}px, ${randomY}px)`;
+            // absolute position으로 container 기준 위치 지정
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'none';
         });
 
-        // 터치 디바이스 대응
+        // 터치 디바이스 대응 - container 안에서만
         noBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            const containerRect = buttonContainer.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
             const btnRect = noBtn.getBoundingClientRect();
 
-            const maxX = containerRect.width - btnRect.width;
-            const maxY = containerRect.height - btnRect.height;
+            // container 내에서 버튼이 이동할 수 있는 최대 범위 (안전 여백 포함)
+            const safeMargin = 30; // 안전 여백
+            const maxX = containerRect.width - btnRect.width - safeMargin;
+            const maxY = containerRect.height - btnRect.height - safeMargin;
 
-            const randomX = Math.random() * maxX - (btnRect.left - containerRect.left);
-            const randomY = Math.random() * maxY - (btnRect.top - containerRect.top);
+            // 랜덤한 새 위치
+            const randomX = Math.max(safeMargin / 2, Math.random() * maxX);
+            const randomY = Math.max(safeMargin / 2, Math.random() * maxY);
 
-            // 기존 translateX(50%)를 유지하면서 도망가기
-            noBtn.style.left = '50%';
-            noBtn.style.transform = `translateX(50%) translate(${randomX}px, ${randomY}px)`;
+            // absolute position으로 container 기준 위치 지정
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'none';
         });
 
         // YES 버튼 크기 조절 (마우스 위치에 따라)
