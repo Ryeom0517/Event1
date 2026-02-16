@@ -77,7 +77,8 @@
             background: linear-gradient(135deg, #f25589 0%, #FF6B9D 100%);
             color: white;
             position: absolute;
-            left: 70px;
+            left: 50%;
+            transform: translateX(-150%);
         }
 
         .btn-yes:hover {
@@ -89,7 +90,49 @@
             color: #666;
             position: absolute;
             transition: all 0.2s ease;
-            right: 75px;
+            left: 50%;
+            transform: translateX(50%);
+        }
+
+        /* 모바일 대응 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 25px;
+                width: 95%;
+                gap: 25px;
+            }
+
+            .icon {
+                font-size: 60px;
+            }
+
+            .main-text {
+                font-size: 22px;
+            }
+
+            .btn {
+                padding: 12px 28px;
+                font-size: 16px;
+            }
+
+            .button-container {
+                min-height: 50px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 35px 20px;
+            }
+
+            .main-text {
+                font-size: 20px;
+            }
+
+            .btn {
+                padding: 10px 22px;
+                font-size: 14px;
+            }
         }
 
         .small-text {
@@ -196,7 +239,9 @@
             const randomX = Math.random() * maxX - (btnRect.left - containerRect.left);
             const randomY = Math.random() * maxY - (btnRect.top - containerRect.top);
 
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            // 기존 translateX(50%)를 유지하면서 도망가기
+            noBtn.style.left = '50%';
+            noBtn.style.transform = `translateX(50%) translate(${randomX}px, ${randomY}px)`;
         });
 
         // 터치 디바이스 대응
@@ -211,7 +256,9 @@
             const randomX = Math.random() * maxX - (btnRect.left - containerRect.left);
             const randomY = Math.random() * maxY - (btnRect.top - containerRect.top);
 
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            // 기존 translateX(50%)를 유지하면서 도망가기
+            noBtn.style.left = '50%';
+            noBtn.style.transform = `translateX(50%) translate(${randomX}px, ${randomY}px)`;
         });
 
         // YES 버튼 크기 조절 (마우스 위치에 따라)
@@ -263,11 +310,20 @@
                 finalScale = Math.max(0.3, finalScale); // 최소 0.3배
             }
 
-            yesBtn.style.transform = `scale(${finalScale})`;
+            yesBtn.style.transform = `translateX(-150%) scale(${finalScale})`;
         });
 
         // YES 버튼 클릭
+        let isClicked = false; // 클릭 여부 체크
+
         yesBtn.addEventListener('click', () => {
+            // 이미 클릭되었으면 무시
+            if (isClicked) return;
+            isClicked = true;
+
+            // 버튼 비활성화
+            yesBtn.style.pointerEvents = 'none';
+
             mainText.innerText += '\n고마워~~🙇‍♂️';
 
             // 빵빠레 효과
